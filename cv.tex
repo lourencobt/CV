@@ -1,0 +1,28 @@
+\documentclass[11pt, a4paper]{cv}
+\usepackage[UKenglish]{isodate}
+\geometry{left=1.4cm, top=.8cm, right=1.4cm, bottom=1.8cm, footskip=.5cm}
+
+
+\name{Your}{Name}
+\position{Software Engineer{\enskip\cdotp\enskip}Your Title}
+\address{Your Location}
+\email{your.email@example.com}
+\homepage{https://yourwebsite.com}
+\github{yourgithub}
+\linkedin{yourlinkedin}
+% \orcid{0000-0000-0000-0000}
+
+
+\begin{document}
+\makecvheader[C]
+\makecvfooter{\cleanlookdateon\today}{Your CV}{\thepage}
+
+\input{cv/education.tex}
+
+\input{cv/skills.tex}
+
+\input{cv/experience.tex}
+
+\input{cv/awards.tex}
+
+\end{document}
