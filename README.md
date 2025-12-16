@@ -7,12 +7,26 @@ This repository contains a customizable CV/resume built using the [Awesome-CV](h
 
 - `cv.tex` - Main LaTeX document that includes all sections
 - `cv.cls` - Custom class file with style modifications
-- `awesome-cv.cls` - The Awesome-CV template class file
+- `awesome-cv/` - Git submodule containing the Awesome-CV template
 - `cv/` - Directory containing individual section files:
   - `education.tex` - Education history
   - `skills.tex` - Technical and soft skills
   - `experience.tex` - Work experience
   - `awards.tex` - Awards and honors
+
+## Getting Started
+
+When cloning this repository, make sure to initialize the submodules:
+
+```bash
+git clone --recurse-submodules https://github.com/lourencobt/CV.git
+```
+
+Or if you've already cloned the repository:
+
+```bash
+git submodule update --init --recursive
+```
 
 ## Customization
 

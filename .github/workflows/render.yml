@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Make CV
         run: |
@@ -39,6 +41,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Set release metadata
         id: release-metadata
