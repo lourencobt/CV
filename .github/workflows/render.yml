@@ -1,0 +1,63 @@
+name: render
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Make CV
+        run: |
+          apt-get update && apt-get install -y make
+          make
+          mkdir -p artifacts
+          cp cv.log cv.pdf artifacts/ || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cv-artifacts
+          path: artifacts/
+        if: ${{ always() }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: render
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set release metadata
+        id: release-metadata
+        run: |
+          echo "name=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: cv-artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.release-metadata.outputs.name }}
+          name: ${{ steps.release-metadata.outputs.name }}
+          files: cv.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
