@@ -7,30 +7,34 @@
 % Modifications
 %
 
+\usepackage{lato}
+
 % change default colour
-\colorlet{awesome}{awesome-darknight}
+\definecolor{color}{HTML}{0a8181}
+\colorlet{awesome}{color}
 
-% disable section colour
-\setbool{acvSectionColorHighlight}{false}
-
-% make smaller
-\renewcommand*{\skilltypestyle}[1]{\fontsize{8pt}{1em}\bodyfont\bfseries\color{darktext} {#1}}
-
-% change layout
-\renewcommand*{\cventry}[5]{
-  \vspace{-2.0mm}
-  \setlength\tabcolsep{0pt}
-  \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{4.5cm} L{\textwidth - 4.5cm}}
-    \entrydatestyle{#4} & \entrytitlestyle{#2} \\
-    \entrylocationstyle{#3} & \entrypositionstyle{#1} \\
-    & \descriptionstyle{#5}
-  \end{tabular*}
+% Awesome section color
+\def\@sectioncolor#1{%
+  \ifbool{acvSectionColorHighlight}{{\color{awesome}#1}}{#1}%
 }
 
-% rename cvhonors -> cvawards; change column sizing
-\renewenvironment{cvhonors}{\undefined}{}
-\newenvironment{cvawards}{
+% disable section colour
+\setbool{acvSectionColorHighlight}{true}
+
+% change font sizes
+\renewcommand*{\headerfirstnamestyle}[1]{{\fontsize{32pt}{1em}\lato\bfseries\color{text} #1}}
+\renewcommand*{\headerlastnamestyle}[1]{{\fontsize{32pt}{1em}\lato\bfseries\color{text} #1}}
+\renewcommand*{\headerpositionstyle}[1]{{\fontsize{7.6pt}{1em}\bodyfont\scshape\color{awesome} #1}}
+\renewcommand*{\sectionstyle}[1]{{\fontsize{16pt}{1em}\lato\fontseries{eb}\selectfont\color{text}\@sectioncolor{#1}}}
+
+% change bold color
+\renewcommand*{\bfseries}{\fontseries{b}\selectfont\color{awesome}}
+
+% change hrule color
+\def\vhrulefill#1{\leavevmode\color{awesome}\leaders\hrule\@height#1\hfill \kern\z@}
+
+% customize cvhonors environment
+\renewenvironment{cvhonors}{
   \vspace{\acvSectionContentTopSkip}
   \vspace{-2mm}
   \begin{center}
@@ -42,59 +46,50 @@
   \end{center}
 }
 
-% rename cvhonor -> cvaward
-\let\cvhonor\undefined
-\newcommand*{\cvaward}[4]{
+\renewcommand*{\cvhonor}[4]{
   \honordatestyle{#4} & \honorpositionstyle{#1}, \honortitlestyle{#2} & \honorlocationstyle{#3} \\
 }
 
-% change layout
-\renewenvironment{cvskills}{
+% % another layout for cventry
+% \renewcommand*{\cventry}[5]{
+%   \vspace{-2.0mm}
+%   \setlength\tabcolsep{0pt}
+%   \setlength{\extrarowheight}{0pt}
+%   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{4.5cm} L{\textwidth - 4.5cm}}
+%     \entrydatestyle{#4} & \entrytitlestyle{#2} \\
+%     \entrylocationstyle{#3} & \entrypositionstyle{#1} \\
+%     & \descriptionstyle{#5}
+%   \end{tabular*}
+% }
+
+% Special cventry for activities without 
+
+% Define an entry of cv information
+% Usage: \cventry{<position>}{<title>}{<location>}{<date>}{<description>}
+\newcommand*{\otherscventry}[5]{%
+  \vspace{-2.0mm}
+  \setlength\tabcolsep{0pt}
+  \setlength{\extrarowheight}{0pt}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
+    \ifstrempty{#2#3}
+      {}
+      { \\
+        \entrytitlestyle{#2} & \entrylocationstyle{#3} \\}
+    \ifstrempty{#5}
+      {}
+      {\multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}} \\}
+  \end{tabular*}%
+}
+
+% Define an environment for cvskill
+\renewenvironment{cvskills}{%
   \vspace{\acvSectionContentTopSkip}
   \vspace{-2.0mm}
   \begin{center}
     \setlength\tabcolsep{1ex}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} R{4.5cm * \real{0.9}} L{{\textwidth - 4.5cm} * \real{0.9}}}
-}{
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l L{\textwidth * \real{0.9}}}
+}{%
     \end{tabular*}
   \end{center}
-}
-
-% change alignment
-\renewenvironment{cvitems}{
-  \vspace{-4.0mm}
-  \begin{justify}
-    \begin{itemize}[rightmargin=2ex, nosep, noitemsep]
-      \setlength{\parskip}{0pt}
-      \renewcommand{\labelitemi}{\bullet}
-}{
-    \end{itemize}
-  \end{justify}
-  \vspace{1.0mm}
-}
-
-%
-% Additions
-%
-
-% like \cventry, but reduced to just company & (added) overview - useful for \cventryrole
-\newcommand*{\cventryjob}[2]{
-  \setlength\tabcolsep{0pt}
-  \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{4.5cm} L{\textwidth - 4.5cm}}
-    & \entrytitlestyle{#1} \\
-    & \descriptionstyle{#2}
-  \end{tabular*}
-}
-
-% as original \cventry, but layout changed & squashed up to meet more recent role above; no company/overview.
-\newcommand{\cventryrole}[4]{
-  \vspace{-3.0mm}
-  \setlength\tabcolsep{0pt}
-  \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{4.5cm} L{\textwidth - 4.5cm}}
-    \entrydatestyle{#2}\newline\entrylocationstyle{#3} & \entrypositionstyle{#1} \\
-    & \descriptionstyle{#4}
-  \end{tabular*}
 }
