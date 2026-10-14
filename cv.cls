@@ -8,6 +8,12 @@
 %
 
 \usepackage{lato}
+\usepackage{needspace}
+
+% Keep a section heading with the start of its content instead of
+% stranding it at the bottom of a page.
+\let\cv@origcvsection\cvsection
+\renewcommand{\cvsection}[1]{\Needspace*{8\baselineskip}\cv@origcvsection{#1}}
 
 % change default colour
 \definecolor{color}{HTML}{0a8181}
@@ -88,7 +94,7 @@
   \begin{center}
     \setlength\tabcolsep{1ex}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l L{\textwidth * \real{0.9}}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l L{\textwidth * \real{0.74}}}
 }{%
     \end{tabular*}
   \end{center}
